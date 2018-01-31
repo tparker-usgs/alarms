@@ -16,7 +16,7 @@ def write():
 def render(alarms):
     env = Environment(
         loader=PackageLoader('alarmlogger', 'templates'),
-        autoescape=select_autoescape(['html', 'xml'])
+        #autoescape=select_autoescape(['html', 'xml'])
     )
 
     template = env.get_template('alarmlog.html')
