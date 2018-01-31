@@ -1,3 +1,4 @@
 Jinja2
 pika
+paramiko
 python-dateutil
