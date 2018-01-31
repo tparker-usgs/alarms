@@ -5,16 +5,15 @@ from dateutil import parser
 
 SCHEMA_VERSION = 1
 
-
 class Db(object):
-    def __init__(self, db_file):
+    def __init__(self):
         """
         Lets get started.
         
         :param db_file: 
         """
-        self.db_file = db_file
-        self.conn = get_db_conn(db_file)
+        self.db_file = os.environ['AVOBROKER_DB_FILE']
+        self.conn = get_db_conn(os.environ['AVOBROKER_DB_FILE'])
 
     def insert_alarm(self, alarm):
         """
@@ -42,6 +41,19 @@ class Db(object):
 
         return count
 
+
+    def get_alarms(self):
+        sql = 'SELECT volcano, subject, message FROM alarm'
+
+        alarms = []
+        q = self.conn.execute(sql)
+        for row in q:
+            alarms.append({
+                'volcano': row[0],
+                'subject': row[1],
+                'message': row[2]
+            })
+        return alarms
 
     def close(self):
         self.conn.close()
