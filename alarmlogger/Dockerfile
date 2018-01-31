@@ -20,7 +20,7 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-#1
+#2
 COPY . .
 
-CMD [ "python", "./alarmlogger.py" ]
+CMD [ "python", "-m", "alarmlogger" ]

@@ -5,7 +5,7 @@ import json
 #import base64
 import sqlite3
 import os
-from db import Db
+from .db import Db
 
 def main():
     user = os.environ['AVOBROKER_USER']

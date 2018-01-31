@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Alarms</title>
+</head>
+<body>
+    {# onload should check file age and alert if it's old #}
+    <h1>Alarms</h1>
+    <ul id="alarms">
+    {% for alarm in alarms %}
+        <li>Subject: {{ alarm.subject }}</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
