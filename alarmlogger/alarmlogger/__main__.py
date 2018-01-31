@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 
 import pika
-import json
-#import base64
-import sqlite3
 import os
-from .db import Db
+from .broker import callback
 
 user = os.environ['AVOBROKER_USER']
 passwd = os.environ['AVOBROKER_PASS']
@@ -23,23 +20,8 @@ queue_name = result.method.queue
 channel.queue_bind(exchange='logs',
            queue=queue_name)
 
-db_conn = Db('/alarms')
 print(' [*] Waiting for logs. To exit press CTRL+C')
 
-def callback(ch, method, properties, body):
-    data = json.loads(body)
-#        with open("image.jpg","wb") as fout:
-#            fout.write(base64.b64decode(data['file']))
-
-    print("New alarm:");
-    print("volcano: {}".format(data['volcano']))
-    print("subject: {}".format(data['subject']))
-    print("message: {}".format(data['message']))
-    print("\n\n");
-    db_conn.insert_alarm(data)
-    print("Alarm count: {}".format(db_conn.count_alarms()))
-
-conn = Db('/alarms')
 
 channel.basic_consume(callback,
               queue=queue_name,
