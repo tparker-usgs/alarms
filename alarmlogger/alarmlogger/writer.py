@@ -18,4 +18,5 @@ def render(alarms):
 
     template = env.get_template('alarmlog.html')
 
-    print(template.render(alarms=alarms))
+    with open('avobroker1.html', 'w') as f:
+        f.write( template.render( alarms ) )
