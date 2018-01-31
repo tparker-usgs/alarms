@@ -51,7 +51,7 @@ class Db(object):
             alarms.append({
                 'volcano': row[0],
                 'subject': row[1],
-                'message': row[2]
+                'message': row[2].replace('\n', '<br />')
             })
         return alarms
 
