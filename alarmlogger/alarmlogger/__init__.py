@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # -----------------------------------------------------------------------------
-#  Purpose: Convenience imports for tomputils
+#  Purpose: Create web page listing recent alarms
 #   Author: Tom Parker
 #
 # -----------------------------------------------------------------------------

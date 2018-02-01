@@ -1,30 +1,28 @@
 import sqlite3
 import os
-# from datetime import datetime
+from datetime import datetime
 from dateutil import parser
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 class Db(object):
     def __init__(self):
         """
         Lets get started.
         
-        :param db_file: 
         """
-        self.db_file = os.environ['AVOBROKER_DB_FILE']
-        self.conn = get_db_conn(os.environ['AVOBROKER_DB_FILE'])
+        self.db_file = datetime.now().strftime('alarms_%Y%m%d.db')
+        self.conn = get_db_conn(self.db_file)
 
-    def insert_alarm(self, alarm):
+    def insert_alarm(self, alarm, alarmName, volcano, state):
         """
-        
         :param alarm: 
         :return: 
         """
 
-        sql = '''INSERT INTO alarm (volcano, subject, message) 
-                VALUES (?, ?, ?)'''
-        q = self.conn.execute(sql, (alarm['volcano'], alarm['subject'], alarm['message']))
+        sql = '''INSERT INTO alarm (alarmName, volcano, state, volcanoName, subject, message) 
+                VALUES (?, ?, ?, ?, ?, ?)'''
+        q = self.conn.execute(sql, (alarmName, volcano, state, alarm['volcano'], alarm['subject'], alarm['message']))
 
         self.conn.commit()
 
@@ -43,7 +41,7 @@ class Db(object):
 
 
     def get_alarms(self):
-        sql = 'SELECT volcano, subject, message FROM alarm'
+        sql = 'SELECT volcanoName, subject, message FROM alarm'
 
         alarms = []
         q = self.conn.execute(sql)
@@ -78,7 +76,10 @@ def get_db_conn(db_dir):
     cursor = conn.cursor()
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS alarm (
+                    alarmName text,
                     volcano text,
+                    state text,
+                    volcanoName text,
                     subject text,
                     message text
                     );''')

@@ -15,7 +15,8 @@
 </head>
 <body>
     {# onload should check file age and alert if it's old #}
-
+    <B>Host:</B> {{ host }} <B>Last update:</B> {{ last_update }}<P>
+    <A HREF="{{ previous_file }}">Previous</A> <H2>Alarms on {{ date }}</H2> <A HREF="{{ next_file }}">Next</A>
     <div id="accordion">
         {% for alarm in alarms %}
         <h3>{{ alarm.subject }}</h3>
@@ -26,6 +27,5 @@
         </div>
         {% endfor %}
     </div>
-
 </body>
 </html>
