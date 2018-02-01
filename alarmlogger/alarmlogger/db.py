@@ -11,7 +11,8 @@ class Db(object):
         Lets get started.
         
         """
-        self.db_file = datetime.now().strftime('alarms_%Y%m%d.db')
+        filename_pattern = 'alarms_{}%Y%m%d.db'.format(SCHEMA_VERSION)
+        self.db_file = datetime.now().strftime(filename_pattern)
         self.conn = get_db_conn(self.db_file)
 
     def insert_alarm(self, alarm, alarmName, volcano, state):
