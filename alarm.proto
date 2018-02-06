@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+// ignored by python
+package gov.usgs.volcanoes.alarm;
+
+message Alarm {
+    optional string message = 1;
+    optional bytes attachment = 2;
+    enum State {
+        OK = 0;
+        WARNING = 1;
+        CRITICAL = 2;
+        UNKNOWN = 3;
+    }
+    optional State state = 3;
+    optional string region = 4;
+    optional string name = 5;
+    optional string type = 6;
+}
