@@ -21,11 +21,12 @@ class Db(object):
         :return: 
         """
 
-        sql = '''INSERT INTO alarm (alarmName, volcano, state, volcanoName, subject, message) 
-                VALUES (?, ?, ?, ?, ?, ?)'''
-        q = self.conn.execute(sql, (alarmName, volcano, state, alarm['volcano'], alarm['subject'], alarm['message']))
+        sql = '''INSERT INTO alarm (date, alarmName, volcano, state, volcanoName, subject, message) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)'''
+        q = self.conn.execute(sql, (alarm['date'], alarmName, volcano, state, alarm['volcano'], alarm['subject'], alarm['message']))
 
         self.conn.commit()
+
 
     def count_alarms(self):
         """
@@ -42,15 +43,19 @@ class Db(object):
 
 
     def get_alarms(self):
-        sql = 'SELECT volcanoName, subject, message FROM alarm'
+        sql = 'SELECT date, alarmName, volcano, state, volcanoName, subject, message FROM alarm'
 
         alarms = []
         q = self.conn.execute(sql)
         for row in q:
             alarms.append({
-                'volcano': row[0],
-                'subject': row[1],
-                'message': row[2].replace('\n', '<br />')
+                'date': row[0],
+                'alarmName': row[1],
+                'volcano': row[2],
+                'state': row[3],
+                'volcanoName': row[4],
+                'subject': row[5],
+                'message': row[6].replace('\n', '<br />')
             })
         return alarms
 
@@ -77,6 +82,7 @@ def get_db_conn(db_dir):
     cursor = conn.cursor()
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS alarm (
+                    date text,
                     alarmName text,
                     volcano text,
                     state text,

@@ -4,32 +4,24 @@ Receive messages from broker.
 """
 import json
 
-from .db import Db
-from .writer import write
+import alarm_pb2
 
+FILENAME_SUFFIX = "_%Y%m%d.pb2"
 
 def callback(ch, method, properties, body):
     print("ROUTING KEY", method.routing_key)
-    alarmName, volcano, state = method.routing_key.split(".")
-    alarm = parse_alarm(body)
-    print_message(alarm)
-    insert_alarm(alarm, alarmName, volcano, state)
-    
-    write()
+    alarm = alarm_pb2.Alarm()
+    alarm.ParseFromString(body)
+
+    now = datetime.now()
+    suffix = now.strftime(FILENAME_SUFFIX)
+
+    short_name = filter(str.isalnum, alarm.name)
+    filename = "{}.{}.{}.{}".format(alarm.type, alarm.name, alarm.state)
+    with open(this_file, 'ab') as f:
+        f.write(alarm.SerializeToString())
 
 
-def parse_alarm(body):
-    alarm = json.loads(body)
-    #with open("image.jpg","wb") as fout:
-        #fout.write(base64.b64decode(alarm['file']))
-    return alarm
-
-
-def insert_alarm(alarm, alarmName, volcano, state):
-    conn = Db()
-    conn.insert_alarm(alarm, alarmName, volcano, state)
-
-    
 def print_message(alarm):
     print("New alarm:");
     print("volcano: {}".format(alarm['volcano']))

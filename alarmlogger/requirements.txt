@@ -1,4 +1,5 @@
 Jinja2
-pika
 paramiko
+pika
+protobuf
 python-dateutil
