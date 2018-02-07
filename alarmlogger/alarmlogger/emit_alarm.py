@@ -25,7 +25,7 @@ alarm.state = Alarm.OK
 alarm.region = "none"
 alarm.message = "Test message\nline2\nline3"
 
-routing_key="TomAirwave.MtTesting.triggered"
+routing_key="TomAirwave.MtLocal.triggered"
 channel.basic_publish(exchange='alarms',
                       routing_key=routing_key,
                       body=alarm.SerializeToString())
