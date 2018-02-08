@@ -15,13 +15,14 @@ def ship(queue):
     logging.getLogger().addHandler(logging.StreamHandler())
     logging.getLogger().setLevel(logging.DEBUG)
 
-    transport = paramiko.Transport((os.environ['WEB_HOST']))
-    pkey = paramiko.RSAKey.from_private_key(StringIO(os.environ['PRIVATE_KEY'].replace('\\n', '\n')))
-    user = os.environ['USER']
 
     while True:
         filename = queue.get()
         (path, file) = os.path.split(filename)
+
+        transport = paramiko.Transport((os.environ['WEB_HOST']))
+        pkey = paramiko.RSAKey.from_private_key(StringIO(os.environ['PRIVATE_KEY'].replace('\\n', '\n')))
+        user = os.environ['USER']
         transport.connect(pkey=pkey, username=user)
         sftp = paramiko.SFTPClient.from_transport(transport)
         remote_path = os.path.join(os.environ['WEB_PATH'], os.environ['HOSTNAME'], path)
