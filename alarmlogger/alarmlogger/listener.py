@@ -48,5 +48,7 @@ class Listener(object):
         suffix = now.strftime("%Y%m%d.pb2")
         filename = "{}/{}_{}".format(file_path, method.routing_key, suffix)
         with open(filename, 'ab') as f:
-            f.write(alarm.SerializeToString())
+            msg_str = alarm.SerializeToString()
+            f.write(len(msg_str))
+            f.write(msg_str)
             self.queue.put(filename)
