@@ -5,14 +5,22 @@ import pika
 import sys
 import base64
 import json
+import os
 from datetime import datetime, timedelta
 from time import gmtime, strftime
 
-mycred=pika.credentials.PlainCredentials('ewprocessing', 'avo..avo')
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='avobroker1', credentials=mycred))
+
+exchange = os.environ['AVOBROKER_EXCHANGE']
+mycred=pika.credentials.PlainCredentials(os.environ['AVOBROKER_USER'],
+    os.environ['AVOBROKER_PASS'])
+
+connection = pika.BlockingConnection(pika.ConnectionParameters(
+    host=os.environ['AVOBROKER_HOST'], credentials=mycred))
 channel = connection.channel()
-channel.exchange_declare(exchange='alarms',
-                         exchange_type='topic')
+channel.exchange_declare(exchange=exchange, exchange_type='topic')
+result = channel.queue_declare(exclusive=True)
+queue_name = result.method.queue
+channel.queue_bind(exchange=exchange, queue=queue_name, routing_key="#")
 
 #with open("rabbit-logo_dfefmx.jpg", "rb") as image_file:
     #encoded_string = base64.b64encode(image_file.read())
