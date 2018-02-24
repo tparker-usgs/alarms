@@ -49,6 +49,6 @@ class Listener(object):
         filename = "{}/{}_{}".format(file_path, method.routing_key, suffix)
         with open(filename, 'ab') as f:
             msg_str = alarm.SerializeToString()
-            f.write(len(msg_str))
+            f.write(struct.pack("<I", len(msg_str)))
             f.write(msg_str)
             self.queue.put(filename)
