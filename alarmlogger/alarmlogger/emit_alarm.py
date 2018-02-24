@@ -31,7 +31,7 @@ alarm.name = "Tomp test alarm"
 alarm.type = "TompAirwave"
 alarm.state = Alarm.OK
 alarm.region = "none"
-alarm.message = "Test message\nline2\nline3"
+alarm.message = "Test message 3\nline2\nline3"
 
 routing_key="TomAirwave.MtLocal.triggered"
 channel.basic_publish(exchange='alarms',
